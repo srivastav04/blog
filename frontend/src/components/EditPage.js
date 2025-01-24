@@ -1,0 +1,200 @@
+import React from "react";
+import { useLocation, useNavigate } from "react-router-dom";
+import { useForm } from "react-hook-form";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { editPost } from "../apiFunctions";
+
+export default function EditPage() {
+  const location = useLocation();
+  const { Title, Name, Image, Description, Date, id } = location.state;
+  const queryClient = useQueryClient();
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
+    defaultValues: {
+      Title: Title,
+      Name: Name,
+      Date: Date,
+      Description: Description,
+    },
+  });
+
+  const { mutate, isLoading, isSuccess } = useMutation({
+    mutationFn: (formData) => editPost(formData, id),
+    onSuccess: () => {
+      queryClient.invalidateQueries(["posts"]);
+    },
+    onError: (error) => {
+      console.error("Edit error:", error);
+    },
+  });
+  if (isSuccess) {
+    return (
+      <div className="flex items-center justify-center h-screen bg-gray-100">
+        <div className="card w-full max-w-sm bg-white shadow-lg rounded-lg">
+          <div className="card-body items-center text-center">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              strokeWidth={2}
+              stroke="currentColor"
+              className="w-16 h-16 text-green-500"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+              />
+            </svg>
+            <h2 className="card-title text-xl font-bold mt-4">
+              Upload Successful!
+            </h2>
+            <p className="text-gray-600 mt-2">
+              Your file has been uploaded successfully.
+            </p>
+            <div className="card-actions mt-4">
+              <button className="btn btn-primary w-full">Back</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+  if (isLoading) {
+    <span className="loading loading-dots loading-lg"></span>;
+  }
+  const onSubmit = async (data) => {
+    try {
+      console.log("Form data received:", data);
+
+      const formData = new FormData();
+
+      formData.append("Title", data.Title || Title);
+      formData.append("Name", data.Name || Name);
+      formData.append("Date", data.Date || Date);
+      formData.append("Description", data.Description || Description);
+
+      if (data.Image && data.Image[0]) {
+        formData.append("Image", data.Image[0]);
+        console.log("New image being uploaded:", data.Image[0].name);
+      } else {
+        formData.append("Image", Image);
+        console.log("Using existing image:", Image);
+      }
+
+      for (let pair of formData.entries()) {
+        console.log("FormData entry:", pair[0], pair[1]);
+      }
+
+      console.log("ID being sent:", id);
+      mutate(formData);
+    } catch (error) {
+      console.error("Form submission error:", error);
+    }
+  };
+
+  return (
+    <div className="bg-gray-100 min-h-screen flex items-center justify-center px-4 sm:px-6 lg:px-8">
+      <form
+        onSubmit={handleSubmit(onSubmit)}
+        className="w-full max-w-md bg-white p-6 rounded-lg shadow-md"
+        encType="multipart/form-data"
+      >
+        <h2 className="text-2xl font-bold text-gray-800 mb-6 text-center">
+          Submit Your Details
+        </h2>
+        <div className="mb-4">
+          <label
+            htmlFor="title"
+            className="block text-gray-700 font-medium mb-2"
+          >
+            Title
+          </label>
+          <input
+            defaultValue={Title}
+            type="text"
+            capture="environment"
+            {...register("Title")}
+            placeholder="Enter the title"
+            className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+          />
+        </div>
+        {/* Name */}
+        <div className="mb-4">
+          <label
+            htmlFor="name"
+            className="block text-gray-700 font-medium mb-2"
+          >
+            Name
+          </label>
+          <input
+            defaultValue={Name}
+            placeholder="Enter your name"
+            capture="environment"
+            className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            {...register("Name")}
+          />
+        </div>
+        {/* Date */}
+        <div className="mb-4">
+          <label
+            htmlFor="date"
+            className="block text-gray-700 font-medium mb-2"
+          >
+            Date
+          </label>
+          <input
+            defaultValue={Date}
+            type="date"
+            capture="environment"
+            className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            {...register("Date")}
+          />
+        </div>
+        {/* Description - New Field */}
+        <div className="mb-4">
+          <label
+            htmlFor="description"
+            className="block text-gray-700 font-medium mb-2"
+          >
+            Description
+          </label>
+          <textarea
+            defaultValue={Description}
+            capture="environment"
+            {...register("Description")}
+            placeholder="Enter blog description"
+            rows="4"
+            className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+          />
+        </div>
+        <div className="mb-4">
+          <label
+            htmlFor="Image"
+            className="block text-gray-700 font-medium mb-2"
+          >
+            Upload Image
+          </label>
+          <input
+            type="file"
+            id="Image"
+            accept="image/*"
+            {...register("Image")}
+            className="w-full p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+          />
+        </div>
+
+        <button
+          type="submit"
+          className="w-full bg-blue-500 text-white font-bold py-2 rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
+        >
+          Submit
+        </button>
+      </form>
+    </div>
+  );
+}
