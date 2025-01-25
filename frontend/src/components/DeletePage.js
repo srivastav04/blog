@@ -38,33 +38,41 @@ export default function DeletePage() {
     );
   }
 
-  // Normal render state
   return (
-    <div className="card lg:card-side bg-base-100 shadow-xl mb-6">
-      <figure className="lg:w-1/3">
-        <img src={Image} alt={Title} className="h-full w-full object-cover" />
-      </figure>
-      <div className="card-body lg:w-2/3">
-        <h2 className="card-title">{Title}</h2>
-        <p className="text-gray-600">By {Name}</p>
-        <p>{Description}</p>
-        <p className="text-gray-500 text-sm">{Date}</p>
-        <div className="card-actions justify-end">
-          <button
-            className="btn btn-error btn-sm"
-            onClick={() => mutate(id)}
-            disabled={isPending}
-          >
-            {isPending ? "Deleting..." : "Delete"}
-          </button>
-          <button
-            className="btn btn-ghost btn-sm"
-            onClick={() => navigate("/my-blogs")}
-          >
-            Cancel
-          </button>
+    <div className="min-h-screen flex flex-col">
+      <div className="flex-1 flex flex-col items-center justify-center lg:flex-row lg:justify-start lg:px-10 lg:py-6">
+        <div className="card lg:card-side bg-base-100 shadow-xl mb-6 w-full lg:w-2/3">
+          <figure className="lg:w-1/3">
+            <img
+              src={Image}
+              alt={Title}
+              className="h-full w-full object-cover"
+            />
+          </figure>
+          <div className="card-body lg:w-2/3">
+            <h2 className="card-title">{Title}</h2>
+            <p className="text-gray-600">By {Name}</p>
+            <p>{Description}</p>
+            <p className="text-gray-500 text-sm">{Date}</p>
+            <div className="card-actions justify-end mt-4">
+              <button
+                className="btn btn-error btn-sm"
+                onClick={() => mutate(id)}
+                disabled={isPending}
+              >
+                {isPending ? "Deleting..." : "Delete"}
+              </button>
+              <button
+                className="btn btn-ghost btn-sm ml-2"
+                onClick={() => navigate("/myblogs")}
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
         </div>
       </div>
+      {/* NavBar and Footer Components would be placed here */}
     </div>
   );
 }

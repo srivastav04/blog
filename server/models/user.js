@@ -5,6 +5,8 @@ const userSchema = mongoose.Schema({
   Title: String,
   Image: String,
   Date: String,
+  Tag: { type: String, default: "Untitled" },
+  Likes: { type: Number, default: 0 },
   Description: String,
 });
 

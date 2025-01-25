@@ -14,14 +14,14 @@ import { useQuery } from "@tanstack/react-query";
 const App = () => {
   return (
     <div>
-      <NavBar />
       <Routes>
         <Route
           path="/"
           element={
             <>
+              <NavBar />
               <Hero />
-              <BlogSection />
+              {/* <BlogSection /> */}
             </>
           }
         />

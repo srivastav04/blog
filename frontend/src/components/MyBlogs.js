@@ -1,43 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import React from "react";
-import { Link } from "react-router-dom";
+import { MyBlogCard } from "./OtherComponents";
 import { getPosts } from "../apiFunctions";
-
-const BlogCard = ({ Title, Date, Name, Image, Description, id }) => {
-  return (
-    <div className="card lg:card-side bg-base-100 shadow-xl mb-6">
-      <figure className="lg:w-1/3">
-        <img src={Image} alt={Title} className="h-full w-full object-cover" />
-      </figure>
-      <div className="card-body lg:w-2/3">
-        <h2 className="card-title">{Title}</h2>
-        <p className="text-gray-600">By {Name}</p>
-        <p>{Description}</p>
-        <p className="text-gray-500 text-sm">{Date}</p>
-        <div className="card-actions justify-end">
-          <Link
-            to={`/edit/${id}`}
-            state={{ Title, Date, Name, Image, Description, id }}
-          >
-            <button className="btn btn-primary btn-sm">Edit</button>
-          </Link>
-
-          <Link
-            to={`/delete/${id}`}
-            state={{ Title, Date, Name, Image, Description, id }}
-          >
-            <button
-              className="btn btn-error btn-sm"
-              onClick={() => console.log("hello")}
-            >
-              Delete
-            </button>
-          </Link>
-        </div>
-      </div>
-    </div>
-  );
-};
 
 const MyBlogs = () => {
   const { data, isLoading, isError, error } = useQuery({
@@ -68,13 +32,15 @@ const MyBlogs = () => {
         <div className="space-y-6">
           {data &&
             data.map((blog) => (
-              <BlogCard
+              <MyBlogCard
                 key={blog._id}
                 Title={blog.Title}
                 Image={blog.Image}
                 Date={blog.Date}
                 Description={blog.Description}
                 Name={blog.Name}
+                Tag={blog.Tag}
+                Likes={blog.Likes}
                 id={blog._id}
               />
             ))}

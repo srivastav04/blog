@@ -1,47 +1,7 @@
 import React from "react";
-import { Link } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { getPosts } from "../apiFunctions";
-
-const BlogCard = ({ Title, Date, Name, Image, Description, key }) => {
-  return (
-    <Link
-      to={`/blog/${key}`}
-      state={{ Title, Date, Name, Image, Description }}
-      className="block hover:shadow-lg transition-shadow duration-300"
-    >
-      <div className="card bg-base-100 shadow-md hover:shadow-xl transition-all duration-300 h-full">
-        <figure className="relative w-full pt-[56.25%]">
-          {" "}
-          <img
-            src={Image}
-            alt={Title}
-            className="absolute top-0 left-0 w-full h-full object-cover rounded-t-xl"
-          />
-        </figure>
-
-        <div className="card-body p-4 sm:p-6">
-          <h2 className="card-title text-lg sm:text-xl font-bold line-clamp-2 mb-2">
-            {Title}
-          </h2>
-
-          <p className="text-sm text-gray-600 mb-2">By {Name}</p>
-
-          <p className="text-sm sm:text-base text-gray-700 line-clamp-3 mb-4">
-            {Description}
-          </p>
-
-          <div className="card-actions justify-between items-center mt-auto">
-            <p className="text-xs sm:text-sm text-gray-500">{Date}</p>
-            <button className="btn btn-primary btn-sm sm:btn-md">
-              Read More
-            </button>
-          </div>
-        </div>
-      </div>
-    </Link>
-  );
-};
+import { BlogCard } from "./OtherComponents";
 
 const BlogSection = () => {
   const { data, isLoading, error, isError } = useQuery({
@@ -73,6 +33,8 @@ const BlogSection = () => {
               Name={blog.Name}
               Image={blog.Image}
               Description={blog.Description}
+              Tag={blog.Tag}
+              Likes={blog.Likes}
             />
           ))}
       </div>

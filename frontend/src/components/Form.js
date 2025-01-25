@@ -1,5 +1,5 @@
 import { useForm } from "react-hook-form";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation } from "@tanstack/react-query";
 import { createPost } from "../apiFunctions";
 
 const Form = () => {
@@ -9,7 +9,7 @@ const Form = () => {
     formState: { errors },
   } = useForm();
 
-  const { mutate, isSuccess, isPending, i } = useMutation({
+  const { mutate, isSuccess, isPending } = useMutation({
     mutationFn: createPost,
   });
 
@@ -39,7 +39,12 @@ const Form = () => {
               Your file has been uploaded successfully.
             </p>
             <div className="card-actions mt-4">
-              <button className="btn btn-primary w-full">Back</button>
+              <button
+                className="btn btn-primary w-full"
+                onClick={() => window.location.reload()}
+              >
+                Create +
+              </button>
             </div>
           </div>
         </div>
@@ -121,6 +126,20 @@ const Form = () => {
             })}
           />
           {errors.Name && <p className="text-red-500">{errors.Name.message}</p>}
+        </div>
+        <div className="mb-4">
+          <label
+            htmlFor="name"
+            className="block text-gray-700 font-medium mb-2"
+          >
+            Tag
+          </label>
+          <input
+            placeholder="recommended to keep it short"
+            capture="environment"
+            className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            {...register("Tag")}
+          />
         </div>
         {/* Date */}
         <div className="mb-4">
