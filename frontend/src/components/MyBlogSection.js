@@ -1,31 +1,36 @@
-import React from "react";
 import { useQuery } from "@tanstack/react-query";
+import React from "react";
+import { BlogCard, MyBlogCard } from "./OtherComponents";
 import { getPosts } from "../apiFunctions";
-import { BlogCard } from "./OtherComponents";
 import { Link } from "react-router-dom";
 
-const BlogSection = ({ searchQuery }) => {
-  const { data, isLoading, error, isError } = useQuery({
-    queryKey: ["posts", searchQuery || "all"],
-    queryFn: () => getPosts(searchQuery),
-    refetchOnWindowFocus: false, // Pass searchQuery to API
+const MyBlogs = () => {
+  const { data, isLoading, isError, error } = useQuery({
+    queryKey: ["posts"],
+    queryFn: getPosts,
   });
 
   if (isLoading)
     return (
-      <div className="py-6 h-full">
+      <div className="fixed inset-0 flex items-center justify-center bg-white bg-opacity-80 z-50">
         <span className="loading loading-dots loading-lg text-primary"></span>
       </div>
     );
 
-  if (isError) return <div className="h-[339px]"> Error: {error.message}</div>;
-  if (!data || data.length === 0)
-    return <div className="h-[700px]">No posts found</div>;
+  if (isError) return <div>Error: {error.message}</div>;
+  if (!data || data.length == 0) return <div>No posts found</div>;
 
   return (
-    <div className="py-6 sm:py-10 px-4 sm:px-6 lg:px-8 max-w-full">
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10 sm:gap-6 lg:gap-4 xl:gap-14">
-        {Array.isArray(data) &&
+    <div className="min-h-screen bg-base-200 mb-1">
+      <div className="bg-gray-100 text-gray-800 py-8">
+        <div className="container mx-auto px-4">
+          <h1 className="text-3xl font-bold">My Blogs</h1>
+          <p className="mt-2">Manage your travel stories</p>
+        </div>
+      </div>
+
+      <div className="dark:bg-white grid grid-cols-1 sm:grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6 py-4 px-2">
+        {data &&
           data.map((blog) => {
             const {
               Title,
@@ -34,12 +39,12 @@ const BlogSection = ({ searchQuery }) => {
               Image,
               Description,
               Tag,
-              UpdatedAt,
+              Likes,
               _id: id,
             } = blog;
             return (
               <Link
-                to={`/blog/${id}`}
+                to={`/myblog/${id}`}
                 state={{
                   Title,
                   Date,
@@ -47,20 +52,20 @@ const BlogSection = ({ searchQuery }) => {
                   Image,
                   Description,
                   Tag,
-                  UpdatedAt,
+                  Likes,
                   id,
                 }}
                 className="block hover:shadow-lg transition-shadow duration-300"
-                key={id}
               >
                 <BlogCard
+                  key={id}
                   Title={Title}
                   Date={Date}
                   Name={Name}
                   Image={Image}
                   Description={Description}
                   Tag={Tag}
-                  UpdatedAt={UpdatedAt}
+                  Likes={Likes}
                 />
               </Link>
             );
@@ -70,4 +75,4 @@ const BlogSection = ({ searchQuery }) => {
   );
 };
 
-export default BlogSection;
+export default MyBlogs;

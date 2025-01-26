@@ -7,7 +7,7 @@ const NavBar = () => {
 
   return (
     <>
-      <nav className=" shadow-md w-full z-20">
+      <nav className=" shadow-md w-full z-20 dark:bg-white">
         <div className="max-w-7xl mx-auto px-4">
           <div className="flex justify-between items-center h-16">
             {/* Logo */}
@@ -56,9 +56,9 @@ const NavBar = () => {
                 className="text-gray-800 hover:text-gray-400 focus:outline-none"
               >
                 <svg
-                  className="w-6 h-6"
+                  className="w-6 h-6 dark:text-white"
                   fill="none"
-                  stroke="white"
+                  stroke="grey"
                   viewBox="0 0 24 24"
                   xmlns="http://www.w3.org/2000/svg"
                 >
@@ -77,26 +77,29 @@ const NavBar = () => {
 
       {/* Sidebar */}
       <div
-        className={`fixed top-0 left-0 h-full w-64 bg-base-100 dark:bg-base-200 shadow-lg z-50 transform ${
+        className={`dark:bg-white fixed top-0 left-0 h-full w-64 bg-base-100 shadow-lg z-50 transform ${
           isSidebarOpen ? "translate-x-0" : "-translate-x-full"
         } transition-transform duration-300 ease-in-out`}
       >
         <div className="pt-20 px-6 space-y-4">
           <Link
             to="/"
-            className="block py-2 px-4 text-lg font-medium text-gray-800 dark:text-gray-200 hover:bg-primary hover:text-white dark:hover:bg-primary dark:hover:text-white rounded-md transition-colors"
+            onClick={() => setIsSidebarOpen(false)}
+            className="block py-2 px-4 text-lg font-medium text-gray-800 dark:text-gray-950 hover:bg-primary hover:text-white dark:hover:bg-primary dark:hover:text-white rounded-md transition-colors"
           >
             Home
           </Link>
           <Link
+            onClick={() => setIsSidebarOpen(false)}
             to="/myblogs"
-            className="block py-2 px-4 text-lg font-medium text-gray-800 dark:text-gray-200 hover:bg-primary hover:text-white dark:hover:bg-primary dark:hover:text-white rounded-md transition-colors"
+            className="block py-2 px-4 text-lg font-medium text-gray-800 dark:text-gray-950 hover:bg-primary hover:text-white dark:hover:bg-primary dark:hover:text-white rounded-md transition-colors"
           >
             My Blogs
           </Link>
           <Link
             to="/create"
-            className="block py-2 px-4 text-lg font-medium text-gray-800 dark:text-gray-200 hover:bg-primary hover:text-white dark:hover:bg-primary dark:hover:text-white rounded-md transition-colors"
+            onClick={() => setIsSidebarOpen(false)}
+            className="block py-2 px-4 text-lg font-medium text-gray-800 dark:text-gray-950 hover:bg-primary hover:text-white dark:hover:bg-primary dark:hover:text-white rounded-md transition-colors"
           >
             Create Blog
           </Link>

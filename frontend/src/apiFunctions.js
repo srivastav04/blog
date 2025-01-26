@@ -2,9 +2,9 @@ import axios from "axios";
 
 const API_URL = "http://192.168.29.233:8000";
 
-export const getPosts = async () => {
-  const { data } = await axios.get(`${API_URL}/`);
-
+export const getPosts = async (search = "") => {
+  const endpoint = search ? `${API_URL}/${search}` : `${API_URL}/none`; // Adjust for all posts
+  const { data } = await axios.get(endpoint);
   return data;
 };
 
@@ -30,4 +30,9 @@ export const editPost = async (formData, id) => {
 export const deletePost = async (id) => {
   const response = await axios.delete(`${API_URL}/delete/${id}`);
   return response.status;
+};
+
+export const filterPosts = async (tag) => {
+  const { data } = await axios.get(`${API_URL}/filter/${tag}`);
+  return data;
 };

@@ -3,10 +3,12 @@ import { useLocation } from "react-router-dom";
 
 export default function Blog() {
   const location = useLocation();
-  const { Title, Name, Image, Description, Date, Tag, Likes } = location.state;
+  const { Title, Name, Image, Description, Date, Tag, UpdatedAt } =
+    location.state;
+  console.log(UpdatedAt);
 
   return (
-    <div className="w-auto h-auto my-5 py-10 flex items-center justify-center">
+    <div className="w-auto h-auto   py-10 flex items-center justify-center  dark:bg-white">
       <div className="card lg:card-side bg-base-100 shadow-xl w-full max-w-5xl mx-3">
         <figure className="w-full lg:w-1/2">
           <img src={Image} alt={Image} className="w-full h-full object-cover" />
@@ -23,11 +25,13 @@ export default function Blog() {
           <h4 className="text-gray-700">
             By:<span>{Name}</span>
           </h4>
-          <p className="text-gray-900 font-serif">{Description}</p>
-          <div className="card-actions justify-between items-center">
-            <p className="text-md text-gray-400">Published on: {Date}</p>
+          <p className="text-gray-900 font-sans">{Description}</p>
+          <div className="card-actions justify-between items-center mt-3">
             <span className="text-sm sm:text-base font-medium text-gray-700">
-              {Likes} Likes
+              {Date}
+            </span>
+            <span className="text-sm sm:text-base font-medium text-gray-700">
+              {UpdatedAt ? <p>Updated at: {UpdatedAt}</p> : ""}
             </span>
           </div>
         </div>

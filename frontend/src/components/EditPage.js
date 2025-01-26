@@ -6,8 +6,18 @@ import { editPost } from "../apiFunctions";
 
 export default function EditPage() {
   const location = useLocation();
-  const { Title, Name, Image, Description, Date, id } = location.state;
+  const navigate = useNavigate();
+  const {
+    Title,
+    Name,
+    Image,
+    Description,
+    Date: date,
+    id,
+    Tag,
+  } = location.state;
   const queryClient = useQueryClient();
+  const today = new Date();
 
   const {
     register,
@@ -17,8 +27,9 @@ export default function EditPage() {
     defaultValues: {
       Title: Title,
       Name: Name,
-      Date: Date,
+      Date: date,
       Description: Description,
+      Tag: Tag,
     },
   });
 
@@ -57,7 +68,14 @@ export default function EditPage() {
               Your file has been uploaded successfully.
             </p>
             <div className="card-actions mt-4">
-              <button className="btn btn-primary w-full">Back</button>
+              <button
+                className="btn btn-primary w-full"
+                onClick={() => {
+                  navigate("/myblogs");
+                }}
+              >
+                Back
+              </button>
             </div>
           </div>
         </div>
@@ -75,8 +93,10 @@ export default function EditPage() {
 
       formData.append("Title", data.Title || Title);
       formData.append("Name", data.Name || Name);
-      formData.append("Date", data.Date || Date);
+      formData.append("Date", data.data || date);
       formData.append("Description", data.Description || Description);
+      formData.append("Tag", data.Tag || Tag);
+      formData.append("UpdatedAt", today.toISOString().split("T")[0]);
 
       if (data.Image && data.Image[0]) {
         formData.append("Image", data.Image[0]);
@@ -98,7 +118,7 @@ export default function EditPage() {
   };
 
   return (
-    <div className="bg-gray-100 min-h-screen flex items-center justify-center px-4 sm:px-6 lg:px-8">
+    <div className="bg-gray-100 dark:bg-white h-fit py-4 flex items-center justify-center px-4 sm:px-6 lg:px-8">
       <form
         onSubmit={handleSubmit(onSubmit)}
         className="w-full max-w-md bg-white p-6 rounded-lg shadow-md"
@@ -139,20 +159,16 @@ export default function EditPage() {
             {...register("Name")}
           />
         </div>
-        {/* Date */}
         <div className="mb-4">
-          <label
-            htmlFor="date"
-            className="block text-gray-700 font-medium mb-2"
-          >
-            Date
+          <label htmlFor="tag" className="block text-gray-700 font-medium mb-2">
+            Tag
           </label>
           <input
-            defaultValue={Date}
-            type="date"
+            defaultValue={Tag}
+            placeholder="tag"
             capture="environment"
             className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-            {...register("Date")}
+            {...register("Tag")}
           />
         </div>
         {/* Description - New Field */}
@@ -193,6 +209,12 @@ export default function EditPage() {
           className="w-full bg-blue-500 text-white font-bold py-2 rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
         >
           Submit
+        </button>
+        <button
+          className="w-full bg-gray-200 text-black font-bold py-2 rounded-lg hover:bg-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 mt-3"
+          onClick={() => navigate("/myblogs")}
+        >
+          Back
         </button>
       </form>
     </div>

@@ -7,7 +7,7 @@ export default function DeletePage() {
   const location = useLocation();
   const navigate = useNavigate();
   const queryClient = useQueryClient();
-  const { Title, Date, Name, Image, Description, id } = location.state;
+  const { Title, Date, Name, Image, Description, id, Tag } = location.state;
 
   const { mutate, isSuccess, isPending } = useMutation({
     mutationFn: (id) => deletePost(id),
@@ -22,7 +22,7 @@ export default function DeletePage() {
 
   if (isSuccess) {
     return (
-      <div className="flex flex-col items-center justify-center min-h-screen">
+      <div className="flex flex-col items-center justify-center min-h-screen  dark:bg-white">
         <div className="text-2xl font-bold text-green-600 mb-4">
           Post Deleted Successfully!
         </div>
@@ -39,22 +39,25 @@ export default function DeletePage() {
   }
 
   return (
-    <div className="min-h-screen flex flex-col">
-      <div className="flex-1 flex flex-col items-center justify-center lg:flex-row lg:justify-start lg:px-10 lg:py-6">
-        <div className="card lg:card-side bg-base-100 shadow-xl mb-6 w-full lg:w-2/3">
-          <figure className="lg:w-1/3">
-            <img
-              src={Image}
-              alt={Title}
-              className="h-full w-full object-cover"
-            />
-          </figure>
-          <div className="card-body lg:w-2/3">
-            <h2 className="card-title">{Title}</h2>
-            <p className="text-gray-600">By {Name}</p>
-            <p>{Description}</p>
+    <div className="w-screen h-fit flex justify-center items-center py-8 px-2 dark:bg-white">
+      <div className="card lg:card-side bg-base-100 shadow-xl mb-6 dark:bg-white">
+        <figure className="lg:w-1/3">
+          <img src={Image} alt={Title} className="h-full w-full object-cover" />
+        </figure>
+        <div className="card-body lg:w-2/3">
+          <div>
+            <div className="flex items-center justify-between mb-2">
+              {" "}
+              <h2 className="card-title ">{Title}</h2>{" "}
+              <span className="text-xs sm:text-sm font-medium bg-blue-100 text-blue-700 px-2 py-1 rounded">
+                {Tag}
+              </span>
+            </div>
+            <p className="text-gray-600 mb-2">By:{Name}</p> <p>{Description}</p>
+          </div>
+          <div className="card-actions justify-end">
             <p className="text-gray-500 text-sm">{Date}</p>
-            <div className="card-actions justify-end mt-4">
+            <div>
               <button
                 className="btn btn-error btn-sm"
                 onClick={() => mutate(id)}
@@ -64,7 +67,7 @@ export default function DeletePage() {
               </button>
               <button
                 className="btn btn-ghost btn-sm ml-2"
-                onClick={() => navigate("/myblogs")}
+                onClick={() => navigate(`/myblogs/`)}
               >
                 Cancel
               </button>
@@ -72,7 +75,7 @@ export default function DeletePage() {
           </div>
         </div>
       </div>
-      {/* NavBar and Footer Components would be placed here */}
+      ;
     </div>
   );
 }

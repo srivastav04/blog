@@ -1,6 +1,7 @@
 import { useForm } from "react-hook-form";
 import { useMutation } from "@tanstack/react-query";
 import { createPost } from "../apiFunctions";
+import { useNavigate } from "react-router-dom";
 
 const Form = () => {
   const {
@@ -8,10 +9,12 @@ const Form = () => {
     handleSubmit,
     formState: { errors },
   } = useForm();
+  const today = new Date();
 
   const { mutate, isSuccess, isPending } = useMutation({
     mutationFn: createPost,
   });
+  const navigate = useNavigate();
 
   if (isSuccess) {
     return (
@@ -45,6 +48,12 @@ const Form = () => {
               >
                 Create +
               </button>
+              <button
+                className="btn btn-primary w-full"
+                onClick={() => navigate("/")}
+              >
+                Back
+              </button>
             </div>
           </div>
         </div>
@@ -66,7 +75,7 @@ const Form = () => {
       const formData = new FormData();
       formData.append("Title", data.Title);
       formData.append("Name", data.Name);
-      formData.append("Date", data.Date);
+      formData.append("Date", today.toISOString().split("T")[0]);
       formData.append("Description", data.Description);
 
       if (data.Image && data.Image[0]) {
@@ -80,7 +89,7 @@ const Form = () => {
   };
 
   return (
-    <div className="bg-gray-100 min-h-screen flex items-center justify-center px-4 sm:px-6 lg:px-8">
+    <div className="bg-gray-100 min-h-screen flex items-center justify-center p-4 sm:px-6 lg:px-8">
       <form
         onSubmit={handleSubmit(onSubmit)}
         className="w-full max-w-md bg-white p-6 rounded-lg shadow-md"
@@ -106,7 +115,9 @@ const Form = () => {
             placeholder="Enter the title"
             className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
-          {errors.Title && <p>{errors.Title.message}</p>}
+          {errors.Title && (
+            <p className="text-red-500">{errors.Title.message}</p>
+          )}
         </div>
         {/* Name */}
         <div className="mb-4">
@@ -141,24 +152,7 @@ const Form = () => {
             {...register("Tag")}
           />
         </div>
-        {/* Date */}
-        <div className="mb-4">
-          <label
-            htmlFor="date"
-            className="block text-gray-700 font-medium mb-2"
-          >
-            Date
-          </label>
-          <input
-            type="date"
-            capture="environment"
-            className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-            {...register("Date", {
-              required: { value: true, message: "enter date" },
-            })}
-          />
-          {errors.Date && <p className="text-red-500">{errors.Date.message}</p>}
-        </div>
+
         {/* Description - New Field */}
         <div className="mb-4">
           <label
@@ -206,12 +200,17 @@ const Form = () => {
           )}
         </div>
 
-        {/* Submit Button */}
         <button
           type="submit"
           className="w-full bg-blue-500 text-white font-bold py-2 rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
         >
           Submit
+        </button>
+        <button
+          className="w-full bg-gray-200 text-black font-bold py-2 rounded-lg hover:bg-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 mt-3"
+          onClick={() => navigate("/")}
+        >
+          Back
         </button>
       </form>
     </div>

@@ -29,8 +29,21 @@ async function getUserdata(req, res) {
 
 async function sendUserData(req, res) {
   try {
-    const data = await users.find({});
-    res.json(data);
+    const search = req.params.search;
+
+    // Perform case-insensitive search on `Title` or other relevant fields
+    if (search !== "none") {
+      console.log("something search");
+      const data = await users.find({
+        Tag: { $regex: search, $options: "i" },
+      });
+      return res.json(data);
+    } else {
+      console.log("empty search");
+
+      const data = await users.find({});
+      return res.json(data);
+    }
   } catch (error) {
     console.error("Error fetching blogs:", error);
     res.status(500).json({ message: "Error fetching blogs" });
@@ -38,7 +51,7 @@ async function sendUserData(req, res) {
 }
 
 async function editUserData(req, res) {
-  var { Image, Description, Name, Title, Date } = req.body;
+  var { Image, Description, Name, Title, Date, UpdatedAt, Tag } = req.body;
   const { id } = req.params;
 
   if (req.file) {
@@ -53,6 +66,8 @@ async function editUserData(req, res) {
       Date,
       Description,
       Image,
+      UpdatedAt,
+      Tag,
     }
   );
   await updatedData.save();
@@ -67,4 +82,17 @@ async function deleteUserData(req, res) {
   res.status(200).json({ success: true });
 }
 
-export { getUserdata, sendUserData, upload, editUserData, deleteUserData };
+async function filterUserData(req, res) {
+  const { tag } = req.params;
+  const data = await users.find({ Tag: tag });
+  res.json(data);
+}
+
+export {
+  getUserdata,
+  sendUserData,
+  upload,
+  editUserData,
+  deleteUserData,
+  filterUserData,
+};
