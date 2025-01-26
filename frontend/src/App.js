@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Routes, Route, useLocation } from "react-router-dom";
 import NavBar from "./components/Navbar";
 import Footer from "./components/Footer";
@@ -11,12 +11,21 @@ import HomePage from "./components/HomePage";
 import MyBlog from "./components/MyBlog";
 
 const App = () => {
+  const [searchQuery, setSearchQuery] = useState(undefined);
   const location = useLocation();
   return (
     <div>
-      <NavBar />
+      <NavBar searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
       <Routes>
-        <Route path="/" element={<HomePage />} />
+        <Route
+          path="/"
+          element={
+            <HomePage
+              searchQuery={searchQuery}
+              setSearchQuery={setSearchQuery}
+            />
+          }
+        />
         <Route path="/myblogs" element={<MyBlogSection />} />
         <Route path="/create" element={<Form />} />
         <Route path="/blog/:Title" element={<Blog />} />

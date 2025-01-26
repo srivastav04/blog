@@ -1,26 +1,23 @@
 import React from "react";
 import { useQuery } from "@tanstack/react-query";
 import { getPosts } from "../apiFunctions";
-import { BlogCard } from "./OtherComponents";
+import { BlogCard, ErrorPage, NoPosts } from "./OtherComponents";
 import { Link } from "react-router-dom";
 
 const BlogSection = ({ searchQuery }) => {
   const { data, isLoading, error, isError } = useQuery({
     queryKey: ["posts", searchQuery || "all"],
     queryFn: () => getPosts(searchQuery),
-    refetchOnWindowFocus: false, // Pass searchQuery to API
+    refetchOnWindowFocus: false,
   });
 
   if (isLoading)
     return (
-      <div className="py-6 h-full">
-        <span className="loading loading-dots loading-lg text-primary"></span>
-      </div>
+      <span className="loading loading-dots loading-lg text-primary"></span>
     );
 
-  if (isError) return <div className="h-[339px]"> Error: {error.message}</div>;
-  if (!data || data.length === 0)
-    return <div className="h-[700px]">No posts found</div>;
+  if (isError) return <ErrorPage error={error.message} />;
+  if (!data || data.length === 0) return <NoPosts />;
 
   return (
     <div className="py-6 sm:py-10 px-4 sm:px-6 lg:px-8 max-w-full">

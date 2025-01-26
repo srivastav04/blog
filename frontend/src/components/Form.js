@@ -2,71 +2,24 @@ import { useForm } from "react-hook-form";
 import { useMutation } from "@tanstack/react-query";
 import { createPost } from "../apiFunctions";
 import { useNavigate } from "react-router-dom";
+import { CreationSuccess, Loading } from "./OtherComponents";
 
 const Form = () => {
+  const today = new Date();
+  const navigate = useNavigate();
+
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm();
-  const today = new Date();
 
   const { mutate, isSuccess, isPending } = useMutation({
     mutationFn: createPost,
   });
-  const navigate = useNavigate();
 
-  if (isSuccess) {
-    return (
-      <div className="flex items-center justify-center h-screen bg-gray-100">
-        <div className="card w-full max-w-sm bg-white shadow-lg rounded-lg">
-          <div className="card-body items-center text-center">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              strokeWidth={2}
-              stroke="currentColor"
-              className="w-16 h-16 text-green-500"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
-              />
-            </svg>
-            <h2 className="card-title text-xl font-bold mt-4">
-              Upload Successful!
-            </h2>
-            <p className="text-gray-600 mt-2">
-              Your file has been uploaded successfully.
-            </p>
-            <div className="card-actions mt-4">
-              <button
-                className="btn btn-primary w-full"
-                onClick={() => window.location.reload()}
-              >
-                Create +
-              </button>
-              <button
-                className="btn btn-primary w-full"
-                onClick={() => navigate("/")}
-              >
-                Back
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
-    );
-  }
-  if (isPending) {
-    return (
-      <div className="fixed inset-0 flex items-center justify-center bg-white bg-opacity-80 z-50">
-        <span className="loading loading-dots loading-lg text-primary"></span>
-      </div>
-    );
-  }
+  if (isSuccess) return <CreationSuccess />;
+  if (isPending) return <Loading />;
 
   const onSubmit = async (data) => {
     try {

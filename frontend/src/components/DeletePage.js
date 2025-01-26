@@ -2,6 +2,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import React from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { deletePost } from "../apiFunctions";
+import { DeletionSuccess } from "./OtherComponents";
 
 export default function DeletePage() {
   const location = useLocation();
@@ -20,16 +21,7 @@ export default function DeletePage() {
     },
   });
 
-  if (isSuccess) {
-    return (
-      <div className="flex flex-col items-center justify-center min-h-screen  dark:bg-white">
-        <div className="text-2xl font-bold text-green-600 mb-4">
-          Post Deleted Successfully!
-        </div>
-        <div className="text-gray-600">Redirecting to My Blogs...</div>
-      </div>
-    );
-  }
+  if (isSuccess) return <DeletionSuccess />;
   if (isPending) {
     return (
       <div className="fixed inset-0 flex items-center justify-center bg-white bg-opacity-80">

@@ -5,7 +5,6 @@ export default function Blog() {
   const location = useLocation();
   const { Title, Name, Image, Description, Date, Tag, UpdatedAt } =
     location.state;
-  console.log(UpdatedAt);
 
   return (
     <div className="w-auto h-auto   py-10 flex items-center justify-center  dark:bg-white">

@@ -1,27 +1,50 @@
 import { Link, useLocation } from "react-router-dom";
 import React, { useState } from "react";
 
-const NavBar = () => {
+const NavBar = ({ searchQuery, setSearchQuery }) => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const location = useLocation();
 
   return (
     <>
-      <nav className=" shadow-md w-full z-20 dark:bg-white">
+      <nav className="shadow-md w-full z-20 dark:bg-white dark:text-gray-800">
         <div className="max-w-7xl mx-auto px-4">
           <div className="flex justify-between items-center h-16">
             {/* Logo */}
-            <div className="flex-shrink-0">
-              <Link to="/" className="text-2xl font-bold">
-                Logo
-              </Link>
+            <h1>
+              <b>LOGO</b>
+            </h1>
+
+            {/* Search Bar */}
+            <div className="w-auto flex items-center justify-around sm:w-[200px]">
+              <label className="input input-bordered flex items-center gap-2 dark:bg-white text-gray-800">
+                <input
+                  type="text"
+                  className="grow lg:w-64"
+                  placeholder="Search"
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                />
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 16 16"
+                  fill="currentColor"
+                  className="h-4 w-4 opacity-70"
+                >
+                  <path
+                    fillRule="evenodd"
+                    d="M9.965 11.026a5 5 0 1 1 1.06-1.06l2.755 2.754a.75.75 0 1 1-1.06 1.06l-2.755-2.754ZM10.5 7a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0Z"
+                    clipRule="evenodd"
+                  />
+                </svg>
+              </label>
             </div>
 
             {/* Desktop Menu */}
             <div className="hidden md:flex space-x-8 font-sans">
               <Link
                 to="/"
-                className={` text-gray-400 font-medium transition-colors ${
+                className={`text-gray-400 font-medium transition-colors ${
                   location.pathname === "/" ? "font-bold text-gray-800" : ""
                 }`}
               >
@@ -29,7 +52,7 @@ const NavBar = () => {
               </Link>
               <Link
                 to="/myblogs"
-                className={` text-gray-400 font-medium transition-colors ${
+                className={`text-gray-400 font-medium transition-colors flex ${
                   location.pathname === "/myblogs"
                     ? "font-bold text-gray-800"
                     : ""
@@ -39,7 +62,7 @@ const NavBar = () => {
               </Link>
               <Link
                 to="/create"
-                className={` text-gray-400 font-medium transition-colors ${
+                className={`text-gray-400 font-medium transition-colors ${
                   location.pathname === "/create"
                     ? "font-bold text-gray-800"
                     : ""
