@@ -1,30 +1,57 @@
-import users from "../models/user.js";
+import cloudinary from "cloudinary";
+import { CloudinaryStorage } from "multer-storage-cloudinary";
 import multer from "multer";
+import users from "../models/user.js";
+import dotenv from "dotenv";
 
-const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, "./uploads");
-  },
-  filename: function (req, file, cb) {
-    cb(null, file.originalname);
+dotenv.config();
+
+cloudinary.v2.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
+});
+
+const storage = new CloudinaryStorage({
+  cloudinary: cloudinary.v2,
+  params: {
+    folder: "uploads",
+    format: async (req, file) => "jpg",
+    public_id: (req, file) => Date.now() + "_" + file.originalname,
   },
 });
 
-const upload = multer({ storage: storage });
+const upload = multer({ storage });
+
 async function getUserdata(req, res) {
-  const { Title, Name, Date, Description } = req.body;
-  const imageUrl = `https://blooog-ew1p.onrender.com/uploads/${req.file.filename}`;
+  try {
+    const { Title, Name, Date, Description } = req.body;
 
-  const newUser = new users({
-    Title,
-    Name,
-    Date,
-    Description,
-    Image: imageUrl,
-  });
-  await newUser.save();
+    if (!req.file) {
+      return res.status(400).json({ error: "No file uploaded" });
+    }
 
-  res.json(newUser);
+    console.log("Uploaded file details:", req.file);
+
+    const imageUrl = req.file.path; // Cloudinary URL
+    console.log("Image URL:", imageUrl);
+
+    const newUser = new users({
+      Title,
+      Name,
+      Date,
+      Description,
+      Image: imageUrl,
+    });
+
+    await newUser.save();
+    console.log("New user saved:", newUser);
+
+    res.json(newUser);
+  } catch (error) {
+    console.error("Error in getUserdata:", error);
+    res.status(500).json({ error: "Internal server error" });
+  }
 }
 
 async function sendUserData(req, res) {
@@ -42,7 +69,7 @@ async function sendUserData(req, res) {
       console.log("empty search");
 
       const data = await users.find({});
-      return res.json(data);
+      return res.json(data).status(200);
     }
   } catch (error) {
     console.error("Error fetching blogs:", error);
@@ -55,7 +82,7 @@ async function editUserData(req, res) {
   const { id } = req.params;
 
   if (req.file) {
-    Image = `https://blooog-ew1p.onrender.com/uploads/${req.file.filename}`;
+    Image = req.file.path; // Use Cloudinary URL
   }
 
   const updatedData = await users.findOneAndUpdate(

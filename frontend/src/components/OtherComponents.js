@@ -18,6 +18,7 @@ export const BlogCard = ({
           src={Image}
           alt={Title}
           className="absolute top-0 left-0 w-full h-full object-cover rounded-t-xl"
+          loading="lazy"
         />
       </figure>
 
@@ -70,7 +71,12 @@ export const MyBlogCard = ({
   return (
     <div className="dark:bg-white card lg:card-side bg-base-100 shadow-xl mb-6">
       <figure className="lg:w-1/3">
-        <img src={Image} alt={Title} className="h-full w-full object-cover" />
+        <img
+          src={Image}
+          alt={Title}
+          className="h-full w-full object-cover"
+          loading="lazy"
+        />
       </figure>
       <div className="card-body lg:w-2/3">
         <div>
