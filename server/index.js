@@ -18,7 +18,7 @@ app.use(express.json({ limit: "50mb" }));
 app.use(express.urlencoded({ limit: "50mb", extended: true }));
 
 // Serve static files for file uploads
-app.use(express.static("uploads"));
+app.use("/uploads", express.static("uploads"));
 
 // CORS configuration based on the environment
 if (NODE_ENV === "production") {
@@ -30,7 +30,12 @@ if (NODE_ENV === "production") {
 } else {
   app.use(
     cors({
-      origin: ["http://localhost:3000", "http://192.168.29.233:3000"], // Development URLs
+      origin: [
+        "http://localhost:3000",
+        "http://192.168.29.233:3000",
+        "http://localhost:3000",
+        "https://blooog-ew1p.onrender.com",
+      ],
     })
   );
 }

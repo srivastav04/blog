@@ -13,7 +13,7 @@ const storage = multer.diskStorage({
 const upload = multer({ storage: storage });
 async function getUserdata(req, res) {
   const { Title, Name, Date, Description } = req.body;
-  const imageUrl = `http://192.168.29.233:8000/${req.file.filename}`;
+  const imageUrl = `https://blooog-ew1p.onrender.com/uploads/${req.file.filename}`;
 
   const newUser = new users({
     Title,
@@ -55,7 +55,7 @@ async function editUserData(req, res) {
   const { id } = req.params;
 
   if (req.file) {
-    Image = `http://192.168.29.233:8000/${req.file.filename}`;
+    Image = `https://blooog-ew1p.onrender.com/uploads/${req.file.filename}`;
   }
 
   const updatedData = await users.findOneAndUpdate(
