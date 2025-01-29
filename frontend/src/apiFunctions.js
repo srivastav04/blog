@@ -1,6 +1,7 @@
 import axios from "axios";
 
-const API_URL = process.env.REACT_APP_LOCAL_URL || "http://localhost:8000";
+const API_URL = "http://localhost:8000";
+// console.log("API URL:", API_URL);
 
 export const getPosts = async (search = "") => {
   const endpoint = search ? `${API_URL}/${search}` : `${API_URL}/none`; // Adjust for all posts

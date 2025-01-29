@@ -34,7 +34,7 @@ export default function EditPage() {
     },
   });
 
-  const { mutate, isLoading, isSuccess } = useMutation({
+  const { mutate, isLoading, isSuccess, isPending } = useMutation({
     mutationFn: (formData) => editPost(formData, id),
     onSuccess: () => {
       queryClient.invalidateQueries(["posts"]);
@@ -47,7 +47,10 @@ export default function EditPage() {
     return <EditedSuccess />;
   }
   if (isLoading) {
-    <span className="loading loading-dots loading-lg"></span>;
+    return <span className="loading loading-dots loading-lg"></span>;
+  }
+  if (isPending) {
+    return <span className="loading loading-dots loading-lg"></span>;
   }
   const onSubmit = async (data) => {
     try {
@@ -57,7 +60,7 @@ export default function EditPage() {
 
       formData.append("Title", data.Title || Title);
       formData.append("Name", data.Name || Name);
-      formData.append("Date", data.data || date);
+      formData.append("Date", today.toISOString().split("T")[0]);
       formData.append("Description", data.Description || Description);
       formData.append("Tag", data.Tag || Tag);
       formData.append("UpdatedAt", today.toISOString().split("T")[0]);

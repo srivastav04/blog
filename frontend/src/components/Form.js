@@ -30,11 +30,12 @@ const Form = () => {
       formData.append("Name", data.Name);
       formData.append("Date", today.toISOString().split("T")[0]);
       formData.append("Description", data.Description);
+      formData.append("Tag", data.Tag);
 
-      if (data.Image && data.Image[0]) {
-        formData.append("Image", data.Image[0]);
-        console.log("File being uploaded:", data.Image[0].name);
-      }
+      data.Image && data.Image[0]
+        ? formData.append("Image", data.Image[0])
+        : formData.append("Image", undefined);
+
       mutate(formData);
     } catch (error) {
       console.error("Upload error:", error);
@@ -143,14 +144,9 @@ const Form = () => {
             type="file"
             id="Image"
             accept="image/*"
-            {...register("Image", {
-              required: "Image is required",
-            })}
+            {...register("Image")}
             className="w-full p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
-          {errors.Image && (
-            <p className="text-red-500 text-sm mt-1">{errors.Image.message}</p>
-          )}
         </div>
 
         <button
