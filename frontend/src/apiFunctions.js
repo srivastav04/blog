@@ -1,9 +1,11 @@
 import axios from "axios";
 
 const API_URL = "http://localhost:8000";
-// console.log("API URL:", API_URL);
 
-export const getPosts = async (search = "") => {
+export const getPosts = async (search) => {
+  if (search.length === 1) {
+    search = "";
+  }
   const endpoint = search ? `${API_URL}/${search}` : `${API_URL}/none`; // Adjust for all posts
   const { data } = await axios.get(endpoint);
   return data;

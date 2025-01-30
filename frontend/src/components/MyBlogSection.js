@@ -1,13 +1,18 @@
 import { useQuery } from "@tanstack/react-query";
-import React from "react";
+import React, { useContext } from "react";
 import { BlogCard, ErrorPage, Loading, NoPosts } from "./OtherComponents";
 import { getPosts } from "../apiFunctions";
 import { Link } from "react-router-dom";
+import SearchContext from "../context/SearchContext";
 
 const MyBlogs = () => {
-  const { data, isLoading, isError, error } = useQuery({
+  const { searchQuery } = useContext(SearchContext);
+  console.log("search_query in myBlogs", searchQuery);
+
+  const { data, isLoading, error, isError } = useQuery({
     queryKey: ["posts"],
-    queryFn: getPosts,
+    queryFn: () => getPosts(searchQuery),
+    refetchOnWindowFocus: false,
   });
 
   if (isLoading) return <Loading />;

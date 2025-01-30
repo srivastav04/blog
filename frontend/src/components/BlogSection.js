@@ -1,12 +1,16 @@
-import React from "react";
+import React, { useContext } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { getPosts } from "../apiFunctions";
 import { BlogCard, ErrorPage, NoPosts } from "./OtherComponents";
 import { Link } from "react-router-dom";
+import SearchContext from "../context/SearchContext";
 
-const BlogSection = ({ searchQuery }) => {
+const BlogSection = () => {
+  const { searchQuery } = useContext(SearchContext);
+  console.log(searchQuery);
+
   const { data, isLoading, error, isError } = useQuery({
-    queryKey: ["posts", searchQuery || "all"],
+    queryKey: ["posts"],
     queryFn: () => getPosts(searchQuery),
     refetchOnWindowFocus: false,
   });
@@ -20,7 +24,7 @@ const BlogSection = ({ searchQuery }) => {
   if (!data || data.length === 0) return <NoPosts />;
 
   return (
-    <div className="py-6 sm:py-10 px-4 sm:px-6 lg:px-8 max-w-full">
+    <div className="py-6 sm:py-10 px-4 sm:px-6 lg:px-8 w-full">
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10 sm:gap-6 lg:gap-4 xl:gap-14">
         {Array.isArray(data) &&
           data.map((blog) => {

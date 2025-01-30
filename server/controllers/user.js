@@ -40,7 +40,6 @@ async function getUserdata(req, res) {
       Description,
       Tag,
       Image,
-      UpdatedAt: Date.now(),
     });
     await newPost.save();
     console.log("Data saved successfully", Image);
@@ -55,6 +54,7 @@ async function getUserdata(req, res) {
 async function sendUserData(req, res) {
   try {
     const search = req.params.search;
+    console.log("back_search", search);
 
     if (search !== "none") {
       console.log("Performing search...");

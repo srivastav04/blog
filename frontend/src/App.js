@@ -11,21 +11,12 @@ import HomePage from "./components/HomePage";
 import MyBlog from "./components/MyBlog";
 
 const App = () => {
-  const [searchQuery, setSearchQuery] = useState(undefined);
   const location = useLocation();
   return (
     <div>
-      <NavBar searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
+      <NavBar />
       <Routes>
-        <Route
-          path="/"
-          element={
-            <HomePage
-              searchQuery={searchQuery}
-              setSearchQuery={setSearchQuery}
-            />
-          }
-        />
+        <Route path="/" element={<HomePage />} />
         <Route path="/myblogs" element={<MyBlogSection />} />
         <Route path="/create" element={<Form />} />
         <Route path="/blog/:Title" element={<Blog />} />

@@ -2,18 +2,14 @@ import React from "react";
 
 const Footer = () => {
   return (
-    <footer className="footer p-6 bg-base-200 text-base-content  dark:bg-white   bottom-0">
-      {" "}
+    <footer className="footer p-6 bg-base-200 text-base-content  dark:bg-white  flex  bottom-0 flex-col">
+      <div className="w-full ">
+        <p className="text-lg font-medium text-gray-800 dark:text-grey">
+          Srivastav Kancharala
+        </p>
+        <p className="text-sm text-gray-600 dark:text-gray-300">Developer</p>
+      </div>
       <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-5">
-        {/* Name and Role */}
-        <div>
-          <p className="text-lg font-medium text-gray-800 dark:text-grey">
-            Srivastav Kancharala
-          </p>
-          <p className="text-sm text-gray-600 dark:text-gray-300">Developer</p>
-        </div>
-
-        {/* Email */}
         <div className="flex items-center space-x-2">
           <i className="fa-solid fa-envelope text-xl text-gray-600 dark:text-gray-300"></i>
           <p className="text-sm text-gray-800 dark:text-grey">

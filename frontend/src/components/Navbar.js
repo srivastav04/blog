@@ -1,9 +1,22 @@
 import { Link, useLocation } from "react-router-dom";
-import React, { useState } from "react";
+import React, { useContext, useState, useEffect } from "react";
+import SearchContext from "../context/SearchContext";
+import { useQueryClient } from "@tanstack/react-query";
 
-const NavBar = ({ searchQuery, setSearchQuery }) => {
+const NavBar = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const { setSearchQuery, searchQuery } = useContext(SearchContext);
   const location = useLocation();
+  const queryClient = useQueryClient();
+
+  useEffect(() => {
+    console.log(searchQuery.length);
+
+    if (searchQuery === "") {
+      console.log("Invalidating posts due to empty search query");
+      queryClient.invalidateQueries(["posts"]);
+    }
+  }, [searchQuery, queryClient]);
 
   return (
     <>
@@ -23,20 +36,27 @@ const NavBar = ({ searchQuery, setSearchQuery }) => {
                   className="grow lg:w-64"
                   placeholder="Search"
                   value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
+                  onChange={async (e) => {
+                    await setSearchQuery(e.target.value);
+                    console.log(searchQuery);
+                  }}
                 />
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 16 16"
-                  fill="currentColor"
-                  className="h-4 w-4 opacity-70"
-                >
-                  <path
-                    fillRule="evenodd"
-                    d="M9.965 11.026a5 5 0 1 1 1.06-1.06l2.755 2.754a.75.75 0 1 1-1.06 1.06l-2.755-2.754ZM10.5 7a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0Z"
-                    clipRule="evenodd"
-                  />
-                </svg>
+                <button className="h-8 w-4 opacity-70 ">
+                  {" "}
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 16 16"
+                    fill="currentColor"
+                    className="h-8 w-4 opacity-70 "
+                    onClick={() => queryClient.invalidateQueries(["posts"])}
+                  >
+                    <path
+                      fillRule="evenodd"
+                      d="M9.965 11.026a5 5 0 1 1 1.06-1.06l2.755 2.754a.75.75 0 1 1-1.06 1.06l-2.755-2.754ZM10.5 7a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0Z"
+                      clipRule="evenodd"
+                    />
+                  </svg>
+                </button>
               </label>
             </div>
 
@@ -52,7 +72,7 @@ const NavBar = ({ searchQuery, setSearchQuery }) => {
               </Link>
               <Link
                 to="/myblogs"
-                className={`text-gray-400 font-medium transition-colors flex ${
+                className={`text-gray-400 font-medium transition-colors ${
                   location.pathname === "/myblogs"
                     ? "font-bold text-gray-800"
                     : ""
