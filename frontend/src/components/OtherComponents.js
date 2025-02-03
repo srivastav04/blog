@@ -1,3 +1,4 @@
+import { SignInButton, SignUpButton } from "@clerk/clerk-react";
 import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 
@@ -113,8 +114,8 @@ export const MyBlogCard = ({
 
 export const NoPosts = () => {
   return (
-    <div className="flex flex-col items-center justify-center h-screen text-center">
-      <div className="alert bg-slate-300 text-slate-900 shadow-lg">
+    <div className="flex flex-col items-center justify-center h-screen text-center w-full">
+      <div className="alert bg-slate-300 text-slate-900 shadow-lg w-1/2">
         <div>
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -254,6 +255,38 @@ export const Loading = () => {
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-white bg-opacity-80 z-50">
       <span className="loading loading-dots loading-lg text-primary"></span>
+    </div>
+  );
+};
+
+export const SignUpOrSignIn = () => {
+  return (
+    <div className="flex items-center justify-center min-h-screen bg-base-200 p-6">
+      <div className="card w-full max-w-sm bg-base-100 shadow-xl p-6 rounded-2xl text-center glass">
+        <h2 className="text-2xl font-bold text-primary">Welcome!</h2>
+        <p className="text-gray-500 mt-2">
+          If you already have an account, please sign in. Otherwise, sign up to
+          get started!
+        </p>
+        <div className="flex flex-col gap-4 mt-4">
+          <SignInButton
+            mode="modal"
+            className="btn btn-primary w-full hover:scale-105 transition-transform duration-200"
+            forceRedirectUrl={"/"}
+            onError={(error) => console.log(error)}
+          >
+            Sign In
+          </SignInButton>
+          <SignUpButton
+            mode="modal"
+            className="btn btn-ghost w-full hover:scale-105 transition-transform duration-200"
+            forceRedirectUrl={"/"}
+            onError={(error) => console.log(error)}
+          >
+            Sign Up
+          </SignUpButton>
+        </div>
+      </div>
     </div>
   );
 };

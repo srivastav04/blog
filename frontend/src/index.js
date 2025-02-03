@@ -3,23 +3,30 @@ import ReactDOM from "react-dom/client";
 import "./index.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
-import { BrowserRouter } from "react-router-dom";
-
+import { BrowserRouter, Routes } from "react-router-dom";
+import { ClerkProvider } from "@clerk/clerk-react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import SearchContextProvider from "./context/SearchContextProvider";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 const queryClient = new QueryClient();
+const PUBLISHABLE_KEY = process.env.REACT_APP_CLERK_PUBLISHABLE_KEY;
+
+if (!PUBLISHABLE_KEY) {
+  throw new Error("Missing Publishable Key");
+}
 
 root.render(
   <React.StrictMode>
-    <BrowserRouter>
-      <QueryClientProvider client={queryClient}>
-        <SearchContextProvider>
-          <App />
-        </SearchContextProvider>
-      </QueryClientProvider>
-    </BrowserRouter>
+    <ClerkProvider publishableKey={PUBLISHABLE_KEY}>
+      <BrowserRouter>
+        <QueryClientProvider client={queryClient}>
+          <SearchContextProvider>
+            <App />
+          </SearchContextProvider>
+        </QueryClientProvider>
+      </BrowserRouter>
+    </ClerkProvider>
   </React.StrictMode>
 );
 

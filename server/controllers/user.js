@@ -4,6 +4,7 @@ import multer from "multer";
 import users from "../models/user.js";
 import dotenv from "dotenv";
 import path from "path";
+import e from "express";
 
 dotenv.config();
 
@@ -30,8 +31,7 @@ async function getUserdata(req, res) {
   const { Title, Name, Date, Description, Tag } = req.body;
   let Image = req.file
     ? req.file.path
-    : "https://images.unsplash.com/photo-1656489782764-443559c29211?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D";
-
+    : "https://files.oaiusercontent.com/file-VzMrj262Ne9djcouaFgqTv?se=2025-01-30T08%3A36%3A12Z&sp=r&sv=2024-08-04&sr=b&rscc=max-age%3D604800%2C%20immutable%2C%20private&rscd=attachment%3B%20filename%3Dd2d3539e-3ed1-4c49-81a5-e187a35af01b.webp&sig=OyoTDMcP6nXn8qoJu4eDemLY8ayha06T7jqvGXfrBAQ%3D";
   try {
     const newPost = new users({
       Title,
@@ -42,12 +42,10 @@ async function getUserdata(req, res) {
       Image,
     });
     await newPost.save();
-    console.log("Data saved successfully", Image);
 
     res.status(201).json(newPost);
   } catch (error) {
-    console.log("Error saving data:", error);
-    res.status(500).json({ message: "Error saving data" });
+    res.status(500).json({ message: "Error deleting data", error });
   }
 }
 
@@ -68,8 +66,7 @@ async function sendUserData(req, res) {
       return res.status(200).json(data);
     }
   } catch (error) {
-    console.error("Error fetching blogs:", error);
-    res.status(500).json({ message: "Error fetching blogs" });
+    res.status(500).json({ message: "Error fetching blogs", error });
   }
 }
 
@@ -90,8 +87,6 @@ async function editUserData(req, res) {
         .join("/")
         .replace(/\.[^/.]+$/, "");
 
-      console.log("Deleting image with public_id:", publicId);
-
       await cloudinary.v2.uploader.destroy(publicId);
       imageUrl = req.file.path;
     }
@@ -111,8 +106,7 @@ async function editUserData(req, res) {
 
     return res.status(200).json(updatedPost);
   } catch (error) {
-    console.error("Error updating data:", error); // Fixing the error logging
-    res.status(500).json({ message: "Error updating data" });
+    res.status(500).json({ message: "Error editing data", error });
   }
 }
 
@@ -129,28 +123,21 @@ async function deleteUserData(req, res) {
       .join("/")
       .replace(/\.[^/.]+$/, "");
 
-    console.log("Deleting image with public_id:", publicId);
-
     await cloudinary.v2.uploader.destroy(publicId);
-
     await users.findByIdAndDelete(id);
-
     res.status(200).json({ success: true });
   } catch (error) {
-    console.error("Error deleting data:", error);
-    res.status(500).json({ message: "Error deleting data" });
+    res.status(500).json({ message: "Error deleting data", error });
   }
 }
 
-async function filterUserData(req, res) {
-  const { tag } = req.params;
-
+async function getUserPosts(req, res) {
+  const { userName } = req.params;
   try {
-    const data = await users.find({ Tag: tag });
-    res.json(data);
+    const allBlogs = await users.find({ Name: userName });
+    res.status(200).json(allBlogs);
   } catch (error) {
-    console.error("Error filtering data:", error);
-    res.status(500).json({ message: "Error filtering data" });
+    res.status(500).json({ message: "Error fetching data", error });
   }
 }
 
@@ -160,6 +147,5 @@ export {
   upload,
   editUserData,
   deleteUserData,
-  filterUserData,
+  getUserPosts,
 };
-// uploads/1738068759069_133589529143455583

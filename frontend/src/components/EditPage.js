@@ -3,7 +3,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { editPost } from "../apiFunctions";
-import { EditedSuccess } from "./OtherComponents";
+import { EditedSuccess, Loading } from "./OtherComponents";
 
 export default function EditPage() {
   const location = useLocation();
@@ -46,12 +46,10 @@ export default function EditPage() {
   if (isSuccess) {
     return <EditedSuccess />;
   }
-  if (isLoading) {
-    return <span className="loading loading-dots loading-lg"></span>;
+  if (isLoading || isPending) {
+    return <Loading />;
   }
-  if (isPending) {
-    return <span className="loading loading-dots loading-lg"></span>;
-  }
+
   const onSubmit = async (data) => {
     try {
       console.log("Form data received:", data);
@@ -79,8 +77,10 @@ export default function EditPage() {
 
       console.log("ID being sent:", id);
       mutate(formData);
-    } catch (error) {
-      console.error("Form submission error:", error);
+    } catch {
+      if (errors.Title) {
+        console.error("Error in Title field:", errors.Title.message);
+      }
     }
   };
 
@@ -111,21 +111,7 @@ export default function EditPage() {
           />
         </div>
         {/* Name */}
-        <div className="mb-4">
-          <label
-            htmlFor="name"
-            className="block text-gray-700 font-medium mb-2"
-          >
-            Name
-          </label>
-          <input
-            defaultValue={Name}
-            placeholder="Enter your name"
-            capture="environment"
-            className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-            {...register("Name")}
-          />
-        </div>
+
         <div className="mb-4">
           <label htmlFor="tag" className="block text-gray-700 font-medium mb-2">
             Tag

@@ -2,12 +2,19 @@ import { Link, useLocation } from "react-router-dom";
 import React, { useContext, useState, useEffect } from "react";
 import SearchContext from "../context/SearchContext";
 import { useQueryClient } from "@tanstack/react-query";
+import {
+  SignedOut,
+  SignOutButton,
+  UserButton,
+  useUser,
+} from "@clerk/clerk-react";
 
 const NavBar = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const { setSearchQuery, searchQuery } = useContext(SearchContext);
   const location = useLocation();
   const queryClient = useQueryClient();
+  const { user } = useUser();
 
   useEffect(() => {
     console.log(searchQuery.length);
@@ -89,7 +96,8 @@ const NavBar = () => {
                 }`}
               >
                 Create Blog
-              </Link>
+              </Link>{" "}
+              <UserButton />
             </div>
 
             {/* Mobile Menu Button */}
@@ -125,6 +133,9 @@ const NavBar = () => {
         } transition-transform duration-300 ease-in-out`}
       >
         <div className="pt-20 px-6 space-y-4">
+          <div className="px-2 py-2 text-lg font-medium text-gray-800 dark:text-gray-950 flex justify-start ">
+            <UserButton showName="true" />
+          </div>
           <Link
             to="/"
             onClick={() => setIsSidebarOpen(false)}
@@ -146,6 +157,14 @@ const NavBar = () => {
           >
             Create Blog
           </Link>
+          {user ? (
+            <SignOutButton
+              redirectUrl="/"
+              className="block py-2 px-4 text-lg font-medium text-gray-800 dark:text-gray-950 hover:bg-primary hover:text-white dark:hover:bg-primary dark:hover:text-white rounded-md transition-colors"
+            />
+          ) : (
+            ""
+          )}
         </div>
       </div>
 

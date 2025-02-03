@@ -1,17 +1,19 @@
 import { useQuery } from "@tanstack/react-query";
 import React, { useContext } from "react";
 import { BlogCard, ErrorPage, Loading, NoPosts } from "./OtherComponents";
-import { getPosts } from "../apiFunctions";
+import { getUserPosts } from "../apiFunctions";
 import { Link } from "react-router-dom";
 import SearchContext from "../context/SearchContext";
+import { useUser } from "@clerk/clerk-react";
 
 const MyBlogs = () => {
+  const { user } = useUser();
   const { searchQuery } = useContext(SearchContext);
   console.log("search_query in myBlogs", searchQuery);
 
   const { data, isLoading, error, isError } = useQuery({
     queryKey: ["posts"],
-    queryFn: () => getPosts(searchQuery),
+    queryFn: () => getUserPosts(user.fullName),
     refetchOnWindowFocus: false,
   });
 
@@ -24,8 +26,8 @@ const MyBlogs = () => {
     <div className="min-h-screen bg-base-200 mb-1">
       <div className="bg-gray-100 text-gray-800 py-8">
         <div className="container  px-4">
-          <h1 className="text-3xl font-bold ">My Blogs</h1>
-          <p className="mt-2">Manage your travel stories</p>
+          <h1 className="text-3xl font-bold ">{user.fullName} Blogs</h1>
+          <p className="mt-2">Manage your stories</p>
         </div>
       </div>
 

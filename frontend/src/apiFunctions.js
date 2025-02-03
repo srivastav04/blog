@@ -3,7 +3,7 @@ import axios from "axios";
 const API_URL = "http://localhost:8000";
 
 export const getPosts = async (search) => {
-  if (search.length === 1) {
+  if (search.length <= 1) {
     search = "";
   }
   const endpoint = search ? `${API_URL}/${search}` : `${API_URL}/none`; // Adjust for all posts
@@ -35,7 +35,7 @@ export const deletePost = async (id) => {
   return response.status;
 };
 
-export const filterPosts = async (tag) => {
-  const { data } = await axios.get(`${API_URL}/filter/${tag}`);
-  return data;
+export const getUserPosts = async (userName) => {
+  const response = await axios.get(`${API_URL}/user/${userName}`);
+  return response.data;
 };

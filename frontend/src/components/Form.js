@@ -2,11 +2,13 @@ import { useForm } from "react-hook-form";
 import { useMutation } from "@tanstack/react-query";
 import { createPost } from "../apiFunctions";
 import { useNavigate } from "react-router-dom";
-import { CreationSuccess, Loading } from "./OtherComponents";
+import { CreationSuccess, ErrorPage, Loading } from "./OtherComponents";
+import { useUser } from "@clerk/clerk-react";
 
 const Form = () => {
   const today = new Date();
   const navigate = useNavigate();
+  const { user } = useUser();
 
   const {
     register,
@@ -14,20 +16,19 @@ const Form = () => {
     formState: { errors },
   } = useForm();
 
-  const { mutate, isSuccess, isPending } = useMutation({
+  const { mutate, isSuccess, isPending, isError } = useMutation({
     mutationFn: createPost,
   });
 
   if (isSuccess) return <CreationSuccess />;
   if (isPending) return <Loading />;
+  if (isError) return <ErrorPage message={errors.message} />;
 
   const onSubmit = async (data) => {
     try {
-      console.log("Form data:", data);
-
       const formData = new FormData();
       formData.append("Title", data.Title);
-      formData.append("Name", data.Name);
+      formData.append("Name", user.fullName);
       formData.append("Date", today.toISOString().split("T")[0]);
       formData.append("Description", data.Description);
       formData.append("Tag", data.Tag);
@@ -37,9 +38,7 @@ const Form = () => {
         : formData.append("Image", undefined);
 
       mutate(formData);
-    } catch (error) {
-      console.error("Upload error:", error);
-    }
+    } catch (error) {}
   };
 
   return (
@@ -73,30 +72,8 @@ const Form = () => {
             <p className="text-red-500">{errors.Title.message}</p>
           )}
         </div>
-        {/* Name */}
         <div className="mb-4">
-          <label
-            htmlFor="name"
-            className="block text-gray-700 font-medium mb-2"
-          >
-            Name
-          </label>
-          <input
-            placeholder="Enter your name"
-            capture="environment"
-            className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-            {...register("Name", {
-              required: { value: true, message: "required" },
-              minLength: { value: 5, message: "min_len 5" },
-            })}
-          />
-          {errors.Name && <p className="text-red-500">{errors.Name.message}</p>}
-        </div>
-        <div className="mb-4">
-          <label
-            htmlFor="name"
-            className="block text-gray-700 font-medium mb-2"
-          >
+          <label htmlFor="Tag" className="block text-gray-700 font-medium mb-2">
             Tag
           </label>
           <input
