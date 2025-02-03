@@ -4,7 +4,6 @@ import multer from "multer";
 import users from "../models/user.js";
 import dotenv from "dotenv";
 import path from "path";
-import e from "express";
 
 dotenv.config();
 
@@ -141,6 +140,10 @@ async function getUserPosts(req, res) {
   }
 }
 
+async function testFunct(req, res) {
+  res.send(`<h1>Hello</h1>`);
+}
+
 export {
   getUserdata,
   sendUserData,
@@ -148,4 +151,5 @@ export {
   editUserData,
   deleteUserData,
   getUserPosts,
+  testFunct,
 };
