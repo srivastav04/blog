@@ -16,5 +16,5 @@ router.post("/create", upload.single("Image"), getUserdata);
 router.patch("/edit/:id", upload.single("Image"), editUserData);
 router.delete("/delete/:id", deleteUserData);
 router.get("/user/:userName", getUserPosts);
-router.get("/test", testFunct);
+router.get("/", testFunct);
 export default router;

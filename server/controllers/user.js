@@ -41,7 +41,7 @@ async function getUserdata(req, res) {
       Image,
     });
     await newPost.save();
-
+    res.send("<h1>hello</h1>");
     res.status(201).json(newPost);
   } catch (error) {
     res.status(500).json({ message: "Error deleting data", error });
@@ -140,8 +140,8 @@ async function getUserPosts(req, res) {
   }
 }
 
-async function testFunct(req, res) {
-  res.send(`<h1>Hello</h1>`);
+function testFunct(req, res) {
+  res.send(`<h1>Hello World</h1>`);
 }
 
 export {
