@@ -26,6 +26,8 @@ const Form = () => {
   if (isError) return <ErrorPage message={errors.message} />;
 
   const onSubmit = async (data) => {
+    console.log(data.Image);
+
     try {
       const formData = new FormData();
       formData.append(
@@ -46,9 +48,7 @@ const Form = () => {
         data.Tag.charAt(0).toUpperCase() + data.Tag.slice(1)
       );
 
-      data.Image && data.Image[0]
-        ? formData.append("Image", data.Image[0])
-        : formData.append("Image", placeHolder);
+      if (data.Image && data.Image[0]) formData.append("Image", data.Image[0]);
 
       mutate(formData);
     } catch (error) {}

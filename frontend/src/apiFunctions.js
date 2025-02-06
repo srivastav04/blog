@@ -17,8 +17,7 @@ export const createPost = async (formData) => {
     const response = await axios.post(`${API_URL}/create`, formData);
     return response.data;
   } catch (error) {
-    console.error("Error creating post:", error);
-    throw error;
+    console.log("Error creating post:", error);
   }
 };
 
