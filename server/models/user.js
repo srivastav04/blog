@@ -3,7 +3,11 @@ import mongoose from "mongoose";
 const userSchema = mongoose.Schema({
   Name: String,
   Title: String,
-  Image: String,
+  Image: {
+    type: String,
+    default:
+      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRDpYgKX6Na9EAfhKgjLD4iyPugeNE0wggdkw&s",
+  },
   Date: String,
   Tag: { type: String, default: "Untitled" },
   UpdatedAt: { type: String, default: null },
