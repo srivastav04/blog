@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React from "react";
 import Hero from "./Hero";
 import BlogSection from "./BlogSection";
 

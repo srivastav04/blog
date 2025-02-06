@@ -4,6 +4,7 @@ import { createPost } from "../apiFunctions";
 import { useNavigate } from "react-router-dom";
 import { CreationSuccess, ErrorPage, Loading } from "./OtherComponents";
 import { useUser } from "@clerk/clerk-react";
+import placeHolder from "../Images/placeHolder.jpg";
 
 const Form = () => {
   const today = new Date();
@@ -27,15 +28,27 @@ const Form = () => {
   const onSubmit = async (data) => {
     try {
       const formData = new FormData();
-      formData.append("Title", data.Title);
-      formData.append("Name", user.fullName);
+      formData.append(
+        "Title",
+        data.Title.charAt(0).toUpperCase() + data.Title.slice(1)
+      );
+      formData.append(
+        "Name",
+        user.fullName.charAt(0).toUpperCase() + user.fullName.slice(1)
+      );
       formData.append("Date", today.toISOString().split("T")[0]);
-      formData.append("Description", data.Description);
-      formData.append("Tag", data.Tag);
+      formData.append(
+        "Description",
+        data.Description.charAt(0).toUpperCase() + data.Description.slice(1)
+      );
+      formData.append(
+        "Tag",
+        data.Tag.charAt(0).toUpperCase() + data.Tag.slice(1)
+      );
 
       data.Image && data.Image[0]
         ? formData.append("Image", data.Image[0])
-        : formData.append("Image", undefined);
+        : formData.append("Image", placeHolder);
 
       mutate(formData);
     } catch (error) {}

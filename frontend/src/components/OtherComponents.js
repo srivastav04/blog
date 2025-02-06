@@ -277,14 +277,6 @@ export const SignUpOrSignIn = () => {
           >
             Sign In
           </SignInButton>
-          <SignUpButton
-            mode="modal"
-            className="btn btn-ghost w-full hover:scale-105 transition-transform duration-200"
-            forceRedirectUrl={"/"}
-            onError={(error) => console.log(error)}
-          >
-            Sign Up
-          </SignUpButton>
         </div>
       </div>
     </div>

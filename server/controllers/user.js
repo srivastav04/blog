@@ -28,9 +28,7 @@ const upload = multer({ storage });
 
 async function getUserdata(req, res) {
   const { Title, Name, Date, Description, Tag } = req.body;
-  let Image = req.file
-    ? req.file.path
-    : "https://files.oaiusercontent.com/file-VzMrj262Ne9djcouaFgqTv?se=2025-01-30T08%3A36%3A12Z&sp=r&sv=2024-08-04&sr=b&rscc=max-age%3D604800%2C%20immutable%2C%20private&rscd=attachment%3B%20filename%3Dd2d3539e-3ed1-4c49-81a5-e187a35af01b.webp&sig=OyoTDMcP6nXn8qoJu4eDemLY8ayha06T7jqvGXfrBAQ%3D";
+  let Image = req.file;
   try {
     const newPost = new users({
       Title,
@@ -41,7 +39,6 @@ async function getUserdata(req, res) {
       Image,
     });
     await newPost.save();
-    res.send("<h1>hello</h1>");
     res.status(201).json(newPost);
   } catch (error) {
     res.status(500).json({ message: "Error deleting data", error });
