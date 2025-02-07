@@ -4,7 +4,6 @@ import { createPost } from "../apiFunctions";
 import { useNavigate } from "react-router-dom";
 import { CreationSuccess, ErrorPage, Loading } from "./OtherComponents";
 import { useUser } from "@clerk/clerk-react";
-import placeHolder from "../Images/placeHolder.jpg";
 
 const Form = () => {
   const today = new Date();
