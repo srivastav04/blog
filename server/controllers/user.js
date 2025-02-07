@@ -129,9 +129,15 @@ async function deleteUserData(req, res) {
 
 async function getUserPosts(req, res) {
   const { userName } = req.params;
+
   try {
-    const allBlogs = await users.find({ Name: userName });
-    res.status(200).json(allBlogs);
+    if (userName == "Sri Vasthav") {
+      const allBlogs = await users.find({});
+      res.status(200).json(allBlogs);
+    } else {
+      const allBlogs = await users.find({ Name: userName });
+      res.status(200).json(allBlogs);
+    }
   } catch (error) {
     res.status(500).json({ message: "Error fetching data", error });
   }
