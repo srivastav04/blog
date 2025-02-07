@@ -12,8 +12,6 @@ export const BlogCard = ({
   Tag,
   UpdatedAt,
 }) => {
-  console.log("tag", Tag);
-
   return (
     <div className="dark:bg-white card bg-base-100 shadow-md hover:shadow-xl transition-all duration-300 h-full">
       <figure className="relative w-full pt-[56.25%]">

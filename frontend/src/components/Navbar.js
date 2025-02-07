@@ -77,13 +77,17 @@ const NavBar = () => {
             {/* Search Bar */}
             <div className="w-auto flex sm:w-[300px]">
               <input
+                onChange={(e) => setSearchQuery(e.target.value)}
                 type="text"
                 placeholder="Type here"
                 className="input input-bordered rounded-r-none   w-full max-w-xs dark:bg-white dark:text-gray-800"
               />
               <button
                 className="btn btn-primary rounded-l-none"
-                onClick={() => queryClient.invalidateQueries(["posts"])}
+                onClick={() => {
+                  console.log("he");
+                  queryClient.invalidateQueries(["posts"]);
+                }}
               >
                 <i class="fa-sharp fa-solid fa-magnifying-glass"></i>
               </button>

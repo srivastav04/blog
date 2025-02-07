@@ -7,7 +7,6 @@ import SearchContext from "../context/SearchContext";
 
 const BlogSection = () => {
   const { searchQuery } = useContext(SearchContext);
-  console.log(searchQuery);
 
   const { data, isLoading, error, isError } = useQuery({
     queryKey: ["posts"],
