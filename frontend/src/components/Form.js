@@ -60,7 +60,7 @@ const Form = () => {
         className="w-full max-w-md bg-white p-6 rounded-lg shadow-md"
         encType="multipart/form-data"
       >
-        <h2 className="text-2xl font-bold text-gray-800 mb-6 text-center">
+        <h2 className="text-2xl font-bold text-gray-900 mb-6 text-center">
           Submit Your Details
         </h2>
         {/* Title */}
