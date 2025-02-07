@@ -51,10 +51,7 @@ async function getUserdata(req, res) {
 async function sendUserData(req, res) {
   try {
     const search = req.params.search;
-    console.log("back_search", search);
-
     if (search !== "none") {
-      console.log("Performing search...");
       const data = await users.find({
         Tag: { $regex: search, $options: "i" },
       });
@@ -140,10 +137,6 @@ async function getUserPosts(req, res) {
   }
 }
 
-function testFunct(req, res) {
-  res.send(`<h1>Hello World</h1>`);
-}
-
 export {
   getUserdata,
   sendUserData,
@@ -151,5 +144,4 @@ export {
   editUserData,
   deleteUserData,
   getUserPosts,
-  testFunct,
 };
