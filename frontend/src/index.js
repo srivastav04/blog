@@ -1,4 +1,6 @@
 import React from "react";
+import { Analytics } from "@vercel/analytics/react";
+
 import ReactDOM from "react-dom/client";
 import "./index.css";
 import App from "./App";
@@ -23,6 +25,7 @@ root.render(
         <QueryClientProvider client={queryClient}>
           <SearchContextProvider>
             <App />
+            <Analytics />
           </SearchContextProvider>
         </QueryClientProvider>
       </BrowserRouter>
