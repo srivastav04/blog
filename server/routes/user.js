@@ -6,7 +6,6 @@ import {
   editUserData,
   deleteUserData,
   getUserPosts,
-  testFunct,
 } from "../controllers/user.js";
 
 const router = express.Router();
