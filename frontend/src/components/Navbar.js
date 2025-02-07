@@ -81,7 +81,10 @@ const NavBar = () => {
                 placeholder="Type here"
                 className="input input-bordered rounded-r-none   w-full max-w-xs dark:bg-white dark:text-gray-800"
               />
-              <button className="btn btn-primary rounded-l-none">
+              <button
+                className="btn btn-primary rounded-l-none"
+                onClick={() => queryClient.invalidateQueries(["posts"])}
+              >
                 <i class="fa-sharp fa-solid fa-magnifying-glass"></i>
               </button>
             </div>
