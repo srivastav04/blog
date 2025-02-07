@@ -26,7 +26,7 @@ const NavBar = () => {
     <>
       <nav className="shadow-md w-full z-20 dark:bg-white dark:text-gray-800">
         <div className="max-w-7xl mx-auto px-4">
-          <div className="flex justify-between items-center h-16">
+          <div className="flex justify-between items-center h-16 ">
             {/* Logo (Hidden on smaller screens) */}
             <h1 className="hidden md:block">
               <b className="font-LavishlyYours text-2xl">Bloog</b>
@@ -62,7 +62,10 @@ const NavBar = () => {
                 Create Blog
               </Link>
               {user ? (
-                <UserButton />
+                <SignOutButton
+                  redirectUrl="/"
+                  className="text-gray-400 font-medium transition-colors  "
+                />
               ) : (
                 <SignInButton
                   redirectUrl="/"
@@ -72,7 +75,7 @@ const NavBar = () => {
             </div>
 
             {/* Search Bar */}
-            <div className="w-auto flex sm:w-[200px]">
+            <div className="w-auto flex sm:w-[300px]">
               <input
                 type="text"
                 placeholder="Type here"

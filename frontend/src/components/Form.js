@@ -110,8 +110,8 @@ const Form = () => {
             {...register("Description", {
               required: { value: true, message: "Description is required" },
               minLength: {
-                value: 10,
-                message: "Minimum 10 characters required",
+                value: 5,
+                message: "Minimum 5 characters required",
               },
             })}
             placeholder="Enter blog description"

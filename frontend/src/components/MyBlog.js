@@ -7,7 +7,7 @@ export default function MyBlog() {
     location.state;
 
   return (
-    <div className="w-auto h-auto flex items-center justify-center px-2 py-8 dark:bg-white">
+    <div className="w-auto h-auto   py-10 flex items-center justify-center  dark:bg-white">
       <MyBlogCard
         id={id}
         Title={Title}

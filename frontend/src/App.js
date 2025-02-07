@@ -98,10 +98,8 @@ const App = () => {
           }
         />
       </Routes>
-      {location.pathname.startsWith("/myblog/") ||
-      location.pathname.startsWith("/delete/") ? null : (
-        <Footer />
-      )}
+
+      <Footer />
     </div>
   );
 };
