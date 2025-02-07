@@ -36,7 +36,7 @@ async function getUserdata(req, res) {
       Name,
       Date,
       Description,
-      Tag,
+      Tag: Tag != "" ? Tag : "Untitled",
       Image: Image && Image.toString(),
     });
     await newPost.save();

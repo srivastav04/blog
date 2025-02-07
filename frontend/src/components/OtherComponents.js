@@ -12,6 +12,8 @@ export const BlogCard = ({
   Tag,
   UpdatedAt,
 }) => {
+  console.log("tag", Tag);
+
   return (
     <div className="dark:bg-white card bg-base-100 shadow-md hover:shadow-xl transition-all duration-300 h-full">
       <figure className="relative w-full pt-[56.25%]">
@@ -32,11 +34,10 @@ export const BlogCard = ({
           <p className="text-md text-gray-600 dark:text-gray-500 mb-2">
             By {Name}
           </p>
-          {Tag && (
-            <span className="text-xs sm:text-sm font-medium bg-blue-100 text-blue-700 px-2 py-1 rounded">
-              {Tag}
-            </span>
-          )}
+
+          <span className="text-xs sm:text-sm font-medium bg-blue-100 text-blue-700 px-2 py-1 rounded">
+            {Tag}
+          </span>
         </div>
 
         <p className="text-sm sm:text-base text-gray-700 dark:text-gray-700 line-clamp-3 mb-4">
@@ -261,13 +262,10 @@ export const Loading = () => {
 
 export const SignUpOrSignIn = () => {
   return (
-    <div className="flex items-center justify-center min-h-screen bg-base-200 p-6">
-      <div className="card w-full max-w-sm bg-base-100 shadow-xl p-6 rounded-2xl text-center glass">
-        <h2 className="text-2xl font-bold text-primary">Welcome!</h2>
-        <p className="text-gray-500 mt-2">
-          If you already have an account, please sign in. Otherwise, sign up to
-          get started!
-        </p>
+    <div className="flex items-center justify-center min-h-screen bg-base-200 p-6 dark:bg-white">
+      <div className="card w-full max-w-sm bg-base-100 shadow-xl p-6 rounded-2xl text-center glass dark:bg-slate-400">
+        <h2 className="text-2xl font-bold text-black">Welcome!</h2>
+        <p className="text-black mt-2 ">SignIn to get started!</p>
         <div className="flex flex-col gap-4 mt-4">
           <SignInButton
             mode="modal"

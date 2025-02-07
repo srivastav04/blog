@@ -2,7 +2,12 @@ import { Link, useLocation } from "react-router-dom";
 import React, { useContext, useState, useEffect } from "react";
 import SearchContext from "../context/SearchContext";
 import { useQueryClient } from "@tanstack/react-query";
-import { SignOutButton, UserButton, useUser } from "@clerk/clerk-react";
+import {
+  SignInButton,
+  SignOutButton,
+  UserButton,
+  useUser,
+} from "@clerk/clerk-react";
 
 const NavBar = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -12,10 +17,7 @@ const NavBar = () => {
   const { user } = useUser();
 
   useEffect(() => {
-    console.log(searchQuery.length);
-
     if (searchQuery === "") {
-      console.log("Invalidating posts due to empty search query");
       queryClient.invalidateQueries(["posts"]);
     }
   }, [searchQuery, queryClient]);
@@ -25,30 +27,10 @@ const NavBar = () => {
       <nav className="shadow-md w-full z-20 dark:bg-white dark:text-gray-800">
         <div className="max-w-7xl mx-auto px-4">
           <div className="flex justify-between items-center h-16">
-            {/* Logo */}
-            <h1>
-              <b>LOGO</b>
+            {/* Logo (Hidden on smaller screens) */}
+            <h1 className="hidden md:block">
+              <b className="font-LavishlyYours text-2xl">Bloog</b>
             </h1>
-
-            {/* Search Bar */}
-            <div className="w-auto flex items-center justify-around sm:w-[200px]">
-              <label className="input input-bordered flex items-center gap-2 dark:bg-white text-gray-800 pr-0">
-                <input
-                  type="text"
-                  className="grow lg:w-64"
-                  placeholder="Search"
-                  value={searchQuery}
-                  onChange={async (e) => {
-                    await setSearchQuery(e.target.value);
-                    console.log(searchQuery);
-                  }}
-                />
-                <button className="btn btn-primary">
-                  <i className="fa-solid fa-magnifying-glass"></i>
-                </button>
-              </label>
-            </div>
-
             {/* Desktop Menu */}
             <div className="hidden md:flex space-x-8 font-sans">
               <Link
@@ -78,8 +60,27 @@ const NavBar = () => {
                 }`}
               >
                 Create Blog
-              </Link>{" "}
-              <UserButton />
+              </Link>
+              {user ? (
+                <UserButton />
+              ) : (
+                <SignInButton
+                  redirectUrl="/"
+                  className="text-gray-400 font-medium transition-colors  "
+                />
+              )}
+            </div>
+
+            {/* Search Bar */}
+            <div className="w-auto flex sm:w-[200px]">
+              <input
+                type="text"
+                placeholder="Type here"
+                className="input input-bordered rounded-r-none   w-full max-w-xs dark:bg-white dark:text-gray-800"
+              />
+              <button className="btn btn-primary rounded-l-none">
+                <i class="fa-sharp fa-solid fa-magnifying-glass"></i>
+              </button>
             </div>
 
             {/* Mobile Menu Button */}
@@ -115,8 +116,13 @@ const NavBar = () => {
         } transition-transform duration-300 ease-in-out`}
       >
         <div className="pt-20 px-6 space-y-4">
+          <h1 className="md:hidden mb-4">
+            <b className="font-LavishlyYours text-2xl text-black ">Bloog</b>
+          </h1>
+
           <div className="px-2 py-2 text-lg font-medium text-gray-800 dark:text-gray-950 flex justify-start ">
-            <UserButton showName="true" />
+            <UserButton />
+            <h1 className="ml-2">{user && user.fullName}</h1>
           </div>
           <Link
             to="/"
@@ -145,7 +151,10 @@ const NavBar = () => {
               className="block py-2 px-4 text-lg font-medium text-gray-800 dark:text-gray-950 hover:bg-primary hover:text-white dark:hover:bg-primary dark:hover:text-white rounded-md transition-colors"
             />
           ) : (
-            ""
+            <SignInButton
+              redirectUrl="/"
+              className="block py-2 px-4 text-lg font-medium text-gray-800 dark:text-gray-950 hover:bg-primary hover:text-white dark:hover:bg-primary dark:hover:text-white rounded-md transition-colors"
+            />
           )}
         </div>
       </div>

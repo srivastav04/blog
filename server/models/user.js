@@ -9,7 +9,7 @@ const userSchema = mongoose.Schema({
       "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRDpYgKX6Na9EAfhKgjLD4iyPugeNE0wggdkw&s",
   },
   Date: String,
-  Tag: { type: String, default: "Untitled" },
+  Tag: String,
   UpdatedAt: { type: String, default: null },
   Description: String,
 });

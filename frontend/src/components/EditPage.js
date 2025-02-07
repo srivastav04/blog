@@ -56,10 +56,20 @@ export default function EditPage() {
 
       const formData = new FormData();
 
-      formData.append("Title", data.Title || Title);
-      formData.append("Name", data.Name || Name);
+      formData.append(
+        "Title",
+        data.Title.charAt(0).toUpperCase() + data.Title.slice(1) || Title
+      );
+      formData.append(
+        "Name",
+        data.Name.charAt(0).toUpperCase() + data.Name.slice(1) || Name
+      );
       formData.append("Date", today.toISOString().split("T")[0]);
-      formData.append("Description", data.Description || Description);
+      formData.append(
+        "Description",
+        data.Description.charAt(0).toUpperCase() + data.Description.slice(1) ||
+          Description
+      );
       formData.append("Tag", data.Tag || Tag);
       formData.append("UpdatedAt", today.toISOString().split("T")[0]);
 
